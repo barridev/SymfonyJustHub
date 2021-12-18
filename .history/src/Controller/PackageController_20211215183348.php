@@ -1,0 +1,111 @@
+<?php
+
+namespace App\Controller;
+
+use App\Entity\Package;
+use App\Form\PackageType;
+use App\Repository\PackageRepository;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Config\Definition\Exception\Exception;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+
+#[IsGranted("ROLE_SENDER")]
+class PackageController extends AbstractController
+{
+    #[
+        Route('/package', name: 'package_index', methods: ['GET']),
+        IsGranted("ROLE_SENDER")
+    ]
+    public function index(PackageRepository $packageRepository): Response
+    {
+        // Remplacement par l'autowiring "PackageRepository $packageRepository"
+        //$em = $this->getDoctrine()->getManager();
+        //$packages = $em->getRepository(Package::class)->findAll();
+
+        return $this->render('package/index.html.twig', [
+            'packages' => $packageRepository->findAll(),
+        ]);
+    }
+
+    #[Route('/package/{id}', name: 'package_show', requirements: ['id' => '^\d+$'], methods: ['GET'])]
+    public function show(Package $package): Response
+    {
+        // Remplacement par le param converter "Package $package"
+        //$em = $this->getDoctrine()->getManager();
+        //$package = $em->getRepository(Package::class)->find($id);
+
+        return $this->render('package/show.html.twig', [
+            'package' => $package,
+        ]);
+    }
+
+    #[
+        Route('/package/create', name: 'package_create', methods: ['GET', 'POST']),
+        IsGranted("ROLE_SENDER")
+    ]
+    public function create(Request $request): Response
+    {
+        $package = new package();
+        $form =  $this->createForm(PackageType::class, $package);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($package);
+            $em->flush();
+
+            $this->addFlash('green', "Le livre {$package->getId()} à bien été créé.");
+
+            return $this->redirectToRoute('package_show', [
+                'id' => $package->getId()
+            ]);
+        }
+
+        return $this->render('package/create.html.twig', [
+            'form' => $form->createView()
+        ]);
+    }
+
+    #[Route('/package/edit/{id}', name: 'package_edit', methods: ['GET', 'POST'])]
+    public function edit(Package $package, Request $request): Response
+    {
+        //$package = $em->getRepository(Package::class)->find($id);
+        $form = $this->createForm(PackageType::class, $package);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
+
+            $this->addFlash('green', "Le livre {$package->getId()} à bien été édité.");
+
+            return $this->redirectToRoute('package_show', [
+                'id' => $package->getId()
+            ]);
+        }
+
+        return $this->render('package/edit.html.twig', [
+            'form' => $form->createView(),
+            'package' => $package
+        ]);
+    }
+
+    #[Route('/package/delete/{id}/{token}', name: 'package_delete', methods: ['GET'])]
+    public function delete(Package $package, $token): Response
+    {
+        if ($this->isCsrfTokenValid('delete_package', $token)) {
+            $em = $this->getDoctrine()->getManager();
+            //$package = $em->getRepository(Package::class)->find($id);
+            $em->remove($package);
+            $em->flush();
+
+            $this->addFlash('green', "Le livre {$package->getId()} à bien été supprimé.");
+
+            return $this->redirectToRoute('package_index');
+        }
+
+        throw new Exception('Invalid Token !!');
+    }
+}

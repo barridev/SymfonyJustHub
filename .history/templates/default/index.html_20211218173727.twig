@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon super site{% endblock %}
+
+{% block body %}
+   <br><br><br>
+    {% if app.user.roles == "ROLE_SENDER" %}
+    <a href="{{ path('package_index') }}" class="waves-effect waves-light btn"><i class="material-icons left">featured_play_list</i>Liste des colis (Rôle Sender)</a>
+    <a href="{{ path('package_create') }}" class="waves-effect waves-light btn"><i class="material-icons left">featured_play_list</i>Créer un colis (Rôle Sender)</a>
+
+    
+    <li><a href="http://localhost/logout">Se déconnecter</a></li>
+
+    {% else %} 
+
+    <a href="{{ path('package_indexHub') }}" class="waves-effect waves-light btn"><i class="material-icons left">featured_play_list</i>Liste des colis (Rôle Hub)</a>
+
+    {% endif %}
+
+
+
+    {# <a href="{{ path('security_login') }}">Se connecter</a> #}
+
+{% endblock %}
+
+
+

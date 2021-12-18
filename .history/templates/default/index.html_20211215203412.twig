@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon super site{% endblock %}
+
+{% block body %}
+   Bienvenue sur votre espace,
+    <a href="{{ path('package_create') }}">S'inscrire</a>
+    <a href="{{ path('package_create') }}">Se connecter</a>
+
+{% endblock %}

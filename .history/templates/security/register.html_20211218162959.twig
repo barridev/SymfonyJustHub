@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Engistrement de votre compte{% endblock %}
+
+{% block body %}
+    <h4 class="green">Enregistrement</h1>
+    {{ form_start(form) }}
+        {{ form_rest(form) }}
+        <br/>
+        <button class="waves-effect waves-light btn" type="submit">Créer mon compte</button>
+    {{ form_end(form) }}
+{% endblock %}

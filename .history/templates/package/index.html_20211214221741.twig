@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des colis{% endblock %}
+
+{% block body %}
+    <table class="table bordered">
+        <tr>
+            <td>#</td>
+            <td>Nom</td>
+            <td>Description</td>
+            <td>Prix</td>
+            <td></td>
+        </tr>
+
+        {% for package in packages %}
+            <tr>
+                <td>{{ package.id }}</td>
+                <td>{{ package.name }}</td>
+                <td>{{ package.description }}</td>
+                <td>{{ package.price }}</td>
+                <td>
+                    <a href="{{ path('package_show', {'id': package.id}) }}">Voir</a>
+                    <a href="{{ path('package_edit', {'id': package.id}) }}">Editer</a>
+                    <a href="{{ path('package_delete', {'id': package.id, 'token': csrf_token('delete_package')}) }}">Supprimer</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

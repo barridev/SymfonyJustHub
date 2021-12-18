@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <title>{% block title %}Welcome!{% endblock %}</title>
+    {# Run `composer require symfony/webpack-encore-bundle`
+           and uncomment the following Encore helpers to start using Symfony UX #}
+    {% block stylesheets %}
+        {#{{ encore_entry_link_tags('app') }}#}
+    {% endblock %}
+
+    {% block javascripts %}
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+        {#{{ encore_entry_script_tags('app') }}#}
+    {% endblock %}
+</head>
+<body>
+    <nav class="#ef9a9a red lighten-3">
+        <div class="nav-wrapper container">
+            <a href="#" class="brand-logo">Logosdf</a>
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <li><a href="{{ path('package_index') }}">Liste des colis</a></li>
+                <li><a href="http://localhost/register">S'inscrire</a></li>
+                <li><a href="http://localhost/login">Se connecter</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <a class="btn-floating btn-large waves-effect waves-light blue"><i class="material-icons">add</i></a>
+
+    <div class="container">
+        {% block body %}{% endblock %}
+    </div>
+
+    <script>
+        {% for type, messages in app.flashes() %}
+            {% for message in messages %}
+                M.toast({html: '{{ message }}', classes: '{{ type }}'});
+            {% endfor %}
+        {% endfor %}
+
+        document.addEventListener('DOMContentLoaded', function() {
+            var elems = document.querySelectorAll('select');
+            var instances = M.FormSelect.init(elems);
+        });
+    </script>
+</body>
+</html>

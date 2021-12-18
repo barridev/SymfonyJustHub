@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ package.name }}{% endblock %}
+
+{% block body %}
+    <table class="table bordered">
+        <tr>
+            <td>#</td>
+            <td>Status</td>
+            <td>Expéditeur</td>
+            <td>Casier</td>
+            <td>Client</td>
+            <td>Point relais</td>
+            <td>Poids</td>
+
+        </tr>
+        <tr>
+            <td>{{ package.id }}</td>
+            <td>{{ package.name }}</td>
+            <td>{{ package.description }}</td>
+            <td>{{ package.price }}</td>
+            <td>
+                {% for category in package.categories %}
+                    <span class="new badge" data-badge-caption="">{{ category.name }}</span>
+                {% endfor %}
+            </td>
+        </tr>
+    </table>
+{% endblock %}

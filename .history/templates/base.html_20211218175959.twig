@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald&display=swap" rel="stylesheet"> 
+    <title>{% block title %}Welcome!{% endblock %}</title>
+    {# Run `composer require symfony/webpack-encore-bundle`
+           and uncomment the following Encore helpers to start using Symfony UX #}
+    {% block stylesheets %}
+        {#{{ encore_entry_link_tags('app') }}#}
+    {% endblock %}
+
+    {% block javascripts %}
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+        {#{{ encore_entry_script_tags('app') }}#}
+    {% endblock %}
+</head>
+<body>
+
+
+    <nav class="#b2dfdb teal lighten-4">
+        <div class="nav-wrapper container">
+            <a href="/" class="brand-logo"><img width="150" src="http://josephine-bach.com/logo_api/Amazon_Hub.png"></a>
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+            {% if app.user %}
+                <li><a href="http://localhost/logout">Se déconnecter</a></li>
+            {% else %} 
+                <li><a href="http://localhost/register">S'inscrire</a></li>
+                <li><a href="http://localhost/login">Se connecter</a></li>
+            {% endif %}
+                
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        {% block body %}{% endblock %}
+    </div>
+
+    <script>
+        {% for type, messages in app.flashes() %}
+            {% for message in messages %}
+                M.toast({html: '{{ message }}', classes: '{{ type }}'});
+            {% endfor %}
+        {% endfor %}
+
+        document.addEventListener('DOMContentLoaded', function() {
+            var elems = document.querySelectorAll('select');
+            var instances = M.FormSelect.init(elems);
+        });
+    </script>
+</body>
+</html>
